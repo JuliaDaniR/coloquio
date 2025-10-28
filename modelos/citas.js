@@ -7,12 +7,17 @@ export async function seleccionarCitas(params = {}) {
 }
 
 export async function insertarCitas(data) {
-  const formData = new FormData();
-  formData.append("accion", "insertar");
+  let formData;
 
-  for (const key in data) {
-    if (data[key] !== undefined && data[key] !== null) {
-      formData.append(key, data[key]);
+  if (data instanceof FormData) {
+    formData = data;
+  } else {
+    formData = new FormData();
+    formData.append("accion", "insertar");
+    for (const key in data) {
+      if (data[key] !== undefined && data[key] !== null) {
+        formData.append(key, data[key]);
+      }
     }
   }
 

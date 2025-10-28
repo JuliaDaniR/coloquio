@@ -286,179 +286,182 @@ petFoto?.addEventListener("change", () => {
 window.closePetModal = closePetModal;
 
 // =============================
-// Citas: listar del dueño + helper “días restantes”
+// Helpers
 // =============================
 function daysUntil(dateStr) {
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  const d = new Date(dateStr);
-  d.setHours(0, 0, 0, 0);
-  const delta = Math.round((d - today) / (1000 * 60 * 60 * 24));
-  return delta;
+  const today = new Date(); today.setHours(0,0,0,0);
+  const d = new Date(dateStr); d.setHours(0,0,0,0);
+  return Math.round((d - today) / (1000 * 60 * 60 * 24));
 }
+
+function setMinDateToday() {
+  const now = new Date();
+  const yyyy = now.getFullYear();
+  const mm = String(now.getMonth() + 1).padStart(2, "0");
+  const dd = String(now.getDate()).padStart(2, "0");
+  const todayStr = `${yyyy}-${mm}-${dd}`;
+  
+  appointmentDate.setAttribute("min", todayStr);
+  appointmentDate.value = todayStr;
+}
+
+// =============================
+// Citas: listar del dueño
+// =============================
 async function renderAppointments() {
   const citas = await seleccionarCitas({ cliente_id: ownerId });
 
-  appointmentsContainer.innerHTML = citas
-    .map((c) => {
-      // ✅ Convertimos formato YYYY-MM-DD → DD/MM/YYYY
-      const fechaFormatted =
-        c.fecha?.split("-").reverse().join("/") || "--/--/----";
+  appointmentsContainer.innerHTML = citas.map((c) => {
+    const fechaFormatted = c.fecha?.split("-").reverse().join("/") || "--/--/----";
+    const restantes = daysUntil(c.fecha);
 
-      const restantes = daysUntil(c.fecha);
-      const tag =
-        restantes > 1
-          ? `<span class="tag ok">Faltan ${restantes} días</span>`
-          : restantes === 1
-          ? `<span class="tag warn">Mañana</span>`
-          : restantes === 0
+    const tag = restantes > 1
+      ? `<span class="tag ok">Faltan ${restantes} días</span>`
+      : restantes === 1
+        ? `<span class="tag warn">Mañana</span>`
+        : restantes === 0
           ? `<span class="tag warn">Hoy</span>`
           : `<span class="tag pending">Vencida</span>`;
 
-      return `
+    return `
       <article class="card">
         <div class="card-content">
-          <h3 class="card-title">${c.mascota || "Mascota"} • ${
-        c.cuidador || "Profesional"
-      }</h3>
-          <p class="card-subtitle">📅 ${fechaFormatted} — ⏰ ${
-        c.hora || "--:--"
-      }</p>
+          <h3 class="card-title">${c.mascota || "Mascota"} • ${c.cuidador || "Profesional"}</h3>
+          <p class="card-subtitle">📅 ${fechaFormatted} — ⏰ ${c.hora || "--:--"}</p>
           <div class="card-row">
-            <span class="tag ${
-              c.estado === "ACEPTADA"
-                ? "ok"
-                : c.estado === "PENDIENTE"
-                ? "pending"
-                : ""
-            }">
+            <span class="tag ${c.estado === "ACEPTADA" ? "ok" : (c.estado === "PENDIENTE" ? "pending" : "")}">
               ${c.estado || "PENDIENTE"}
             </span>
             ${tag}
           </div>
         </div>
       </article>`;
-    })
-    .join("");
+  }).join("");
 }
 
 // =============================
-// Reserva: llenar selects + horarios disponibles
+// Reserva: llenar selects
 // =============================
 async function reloadPetsInSelectors() {
   const mascotas = await seleccionarMascotas({ cliente_id: ownerId });
-  selectPet.innerHTML = mascotas
-    .map((m) => `<option value="${m.id}">${m.nombre} • ${m.especie}</option>`)
-    .join("");
+  selectPet.innerHTML = mascotas.map(m => `<option value="${m.id}">${m.nombre} • ${m.especie}</option>`).join("");
 }
 
 async function reloadSittersInSelectors() {
   const usuarios = await seleccionarUsuarios();
-  const sitters = usuarios.filter(
-    (u) =>
-      (u.rol || "").toUpperCase() === "SITTER" && String(u.verificado) === "1"
-  );
-  selectSitter.innerHTML = sitters
-    .map(
-      (s) =>
-        `<option value="${s.id}">${s.nombre_completo || s.email} • ${
-          s.rol_profesional || ""
-        }</option>`
-    )
-    .join("");
+  const sitters = usuarios.filter(u => (u.rol || "").toUpperCase() === "SITTER" && String(u.verificado) === "1");
+  selectSitter.innerHTML = sitters.map(s => `
+    <option value="${s.id}">${s.nombre_completo || s.email} • ${s.rol_profesional || ""}</option>
+  `).join("");
 }
 
+// =============================
+// Horarios disponibles del sitter (con autoselección)
+// =============================
 appointmentDate.addEventListener("change", fillAvailableTimes);
 selectSitter.addEventListener("change", fillAvailableTimes);
 
-// Genera slots cada 30 min entre hora_inicio y hora_fin del sitter para el día seleccionado
 async function fillAvailableTimes() {
   appointmentTime.innerHTML = "";
+
   const sitter_id = selectSitter.value;
-  const dateStr = appointmentDate.value;
+  const dateStr   = appointmentDate.value; // Esperado en formato YYYY-MM-DD
   if (!sitter_id || !dateStr) return;
 
-  const dayIdx = new Date(dateStr).getDay(); // 0=Dom .. 6=Sab
-  const mapDia = ["DOM", "LUN", "MAR", "MIE", "JUE", "VIE", "SAB"];
+  // ✅ Cálculo seguro del día de la semana
+  const [yyyy, mm, dd] = dateStr.split("-");
+  const safeDate = new Date(`${yyyy}-${mm}-${dd}T00:00:00`);
+  const dayIdx = safeDate.getDay(); // 0=Dom .. 6=Sab
+  const mapDia = ["DOM","LUN","MAR","MIE","JUE","VIE","SAB"];
   const dia = mapDia[dayIdx];
 
+  // 🔍 Obtener horarios del sitter
   const horarios = await seleccionarHorarios({ sitter_id });
-  const hDay = horarios.find((h) =>
-    (h.dia || "").toUpperCase().startsWith(dia)
-  );
+  console.log("Horarios recibidos:", horarios);
+  console.log("Buscando disponibilidad para el día:", dia);
+
+  const hDay = horarios.find(h => (h.dia || "").trim().toUpperCase() === dia);
+
   if (!hDay || Number(hDay.activo) !== 1) {
     appointmentTime.innerHTML = `<option value="">⛔ Sin disponibilidad</option>`;
-    appointmentTime.removeAttribute("required"); // ✅ Permite guardar
+    appointmentTime.removeAttribute("required");
+    reservarBtn.disabled = true;
     return;
   }
 
-  // ✅ Si hay horarios, vuelve a requerir
   appointmentTime.setAttribute("required", "true");
 
-  // Generar slots 30'
-  const start = hDay.hora_inicio?.substring(0, 5) || "09:00";
-  const end = hDay.hora_fin?.substring(0, 5) || "17:00";
+  // 🕒 Generar slots cada 30 minutos
+  const start = hDay.hora_inicio?.substring(0,5) || "09:00";
+  const end   = hDay.hora_fin?.substring(0,5) || "17:00";
 
   const slots = [];
-  let [sh, sm] = start.split(":").map(Number);
-  let [eh, em] = end.split(":").map(Number);
   let cur = new Date(`1970-01-01T${start}:00`);
   const endD = new Date(`1970-01-01T${end}:00`);
-
-  while (cur <= endD) {
-    slots.push(cur.toTimeString().substring(0, 5));
+  while (cur < endD) {
+    const t = cur.toTimeString().substring(0,5);
+    slots.push(t);
     cur = new Date(cur.getTime() + 30 * 60000);
   }
 
-  appointmentTime.innerHTML = slots
-    .map((t) => `<option value="${t}">${t} hs</option>`)
-    .join("");
+  // 🎯 Renderizar opciones
+  if (slots.length > 0) {
+    appointmentTime.innerHTML = slots.map(t => `<option value="${t}">${t} hs</option>`).join("");
+    appointmentTime.value = slots[0];
+    reservarBtn.disabled = false;
+  } else {
+    appointmentTime.innerHTML = `<option value="">⛔ Sin disponibilidad</option>`;
+    appointmentTime.removeAttribute("required");
+    reservarBtn.disabled = true;
+  }
 }
 
+// =============================
+// Crear cita (validaciones + FormData)
+// =============================
 appointmentForm.addEventListener("submit", async (e) => {
   e.preventDefault();
 
   const mascota_id = selectPet.value;
-  const sitter_id = selectSitter.value;
-  const fecha = appointmentDate.value;
-  const hora = appointmentTime.value;
+  const sitter_id  = selectSitter.value;
+  const fecha      = appointmentDate.value;
+  const hora       = appointmentTime.value;
 
   if (!mascota_id || !sitter_id || !fecha || !hora) {
     alert("Completá todos los campos de la reserva.");
     return;
   }
 
-  // ✅ Validar que sea una fecha y hora futura
   const now = new Date();
-  const selectedDate = new Date(`${fecha}T${hora}:00`);
-  if (selectedDate <= now) {
+  const selectedDT = new Date(`${fecha}T${hora}:00`);
+  if (selectedDT <= now) {
     alert("🚫 No podés reservar para una fecha u hora pasada.");
     return;
   }
 
-  // ✅ Validar que haya horarios mostrados
-  if (!appointmentTime.value) {
-    alert("🚫 No hay horarios disponibles para esa fecha.");
+  const fd = new FormData();
+  fd.append("accion", "insertar");
+  fd.append("mascota_id", mascota_id);
+  fd.append("sitter_id",  sitter_id);
+  fd.append("cliente_id", ownerId);
+  fd.append("fecha",      fecha);
+  fd.append("hora",       hora);
+
+  const res = await insertarCitas(fd);
+
+  if (!res?.success) {
+    if (res?.message?.includes("ocupado")) {
+      alert("Ese horario ya está reservado. Probá con otro.");
+    } else {
+      alert(res?.message || "No se pudo crear la cita.");
+    }
     return;
   }
 
-  // ✅ POST con FormData
-  const datos = new FormData();
-  datos.append("accion", "insertar");
-  datos.append("mascota_id", mascota_id);
-  datos.append("sitter_id", sitter_id);
-  datos.append("cliente_id", ownerId);
-  datos.append("fecha", fecha);
-  datos.append("hora", hora);
-
-  const res = await insertarCitas(datos);
-
   alert(res.message || "Reserva creada ✅");
   appointmentTime.innerHTML = "";
-
   await renderAppointments();
 });
-
 
 // =============================
 // Theme + Logout + Init

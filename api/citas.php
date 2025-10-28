@@ -12,6 +12,7 @@ try {
   // 📥 GET: obtener citas
   // =======================
   if ($method === 'GET') {
+    // Devolvemos con aliases consistentes con el frontend
     $sql = "SELECT c.id, c.fecha, c.hora, c.estado,
               m.nombre AS mascota,
               u1.nombre_completo AS duenio,
@@ -21,7 +22,6 @@ try {
             JOIN usuarios u1 ON u1.id = c.cliente_id
             JOIN usuarios u2 ON u2.id = c.sitter_id";
 
-    // Filtros opcionales
     if (isset($_GET['sitter_id'])) {
       $sitter_id = intval($_GET['sitter_id']);
       $sql .= " WHERE c.sitter_id = $sitter_id";
@@ -30,30 +30,106 @@ try {
       $sql .= " WHERE c.cliente_id = $cliente_id";
     }
 
+    $sql .= " ORDER BY c.fecha ASC, c.hora ASC";
+
     $citas = $modelo->ejecutarConsulta($sql);
     echo json_encode($citas);
     exit;
   }
 
   // =======================
-  // 🆕 POST: crear, actualizar o eliminar
+  // 🆕 POST: crear/actualizar/eliminar
   // =======================
   if ($method === 'POST') {
+
     // 🐾 INSERTAR
     if ($accion === 'insertar') {
-      $datos = [
-        "fecha" => $_POST['fecha'] ?? '',
-        "hora" => $_POST['hora'] ?? '',
-        "estado" => "PENDIENTE",
-        "mascota_id" => intval($_POST['mascota_id'] ?? 0),
-        "cliente_id" => intval($_POST['cliente_id'] ?? 0),
-        "sitter_id" => intval($_POST['sitter_id'] ?? 0)
-      ];
+      $fecha      = trim($_POST['fecha'] ?? '');
+      $horaInput  = trim($_POST['hora'] ?? '');
+      $mascota_id = intval($_POST['mascota_id'] ?? 0);
+      $cliente_id = intval($_POST['cliente_id'] ?? 0);
+      $sitter_id  = intval($_POST['sitter_id'] ?? 0);
 
-      if (!$datos["fecha"] || !$datos["mascota_id"] || !$datos["cliente_id"] || !$datos["sitter_id"]) {
+      if (!$fecha || !$horaInput || !$mascota_id || !$cliente_id || !$sitter_id) {
         echo json_encode(["success" => false, "message" => "Datos incompletos para crear la cita."]);
         exit;
       }
+
+      // Normalizar hora a HH:MM:SS
+      $hora = (strlen($horaInput) === 5) ? ($horaInput . ":00") : $horaInput;
+
+      // Validar fecha/hora futura (servidor)
+      $now = new DateTime(); // TZ del servidor
+      $dt  = DateTime::createFromFormat('Y-m-d H:i:s', "$fecha $hora");
+      if (!$dt) {
+        echo json_encode(["success" => false, "message" => "Formato de fecha/hora inválido."]);
+        exit;
+      }
+      if ($dt <= $now) {
+        echo json_encode(["success" => false, "message" => "No se puede reservar en el pasado."]);
+        exit;
+      }
+
+      // Verificar disponibilidad del sitter para ese día/horario
+      // Tabla horarios: campos esperados (sitter_id, dia, hora_inicio, hora_fin, activo)
+      $diaSemanaMap = ["DOM","LUN","MAR","MIE","JUE","VIE","SAB"];
+      $diaIdx = (int) $dt->format('w'); // 0..6
+      $diaStr = $diaSemanaMap[$diaIdx];
+
+      $sqlH = "SELECT * FROM horarios 
+               WHERE sitter_id = $sitter_id 
+                 AND UPPER(dia) LIKE CONCAT(UPPER('$diaStr'), '%')
+                 AND activo = 1
+               LIMIT 1";
+      $horario = $modelo->ejecutarConsulta($sqlH);
+
+      if (!$horario || count($horario) === 0) {
+        echo json_encode(["success" => false, "message" => "El profesional no tiene disponibilidad ese día."]);
+        exit;
+      }
+
+      $hInicio = substr($horario[0]['hora_inicio'], 0, 5) . ":00";
+      $hFin    = substr($horario[0]['hora_fin'],    0, 5) . ":00";
+
+      if ($hora < $hInicio || $hora > $hFin) {
+        echo json_encode(["success" => false, "message" => "Horario fuera del rango disponible del profesional."]);
+        exit;
+      }
+
+      // Bloquear doble reserva (mismo sitter, misma fecha y hora)
+      $sqlDup = "SELECT COUNT(*) AS cant 
+                 FROM citas 
+                 WHERE sitter_id = $sitter_id 
+                   AND fecha = '$fecha'
+                   AND hora = '$hora'
+                   AND estado IN ('PENDIENTE','ACEPTADA')";
+      $dup = $modelo->ejecutarConsulta($sqlDup);
+      if ($dup && intval($dup[0]['cant']) > 0) {
+        echo json_encode(["success" => false, "message" => "Ese horario ya está ocupado por otra reserva."]);
+        exit;
+      }
+
+      // (Opcional) Evitar que el mismo dueño duplique exacto slot
+      $sqlDupOwner = "SELECT COUNT(*) AS cant 
+                      FROM citas 
+                      WHERE cliente_id = $cliente_id 
+                        AND fecha = '$fecha' 
+                        AND hora = '$hora'";
+      $dupO = $modelo->ejecutarConsulta($sqlDupOwner);
+      if ($dupO && intval($dupO[0]['cant']) > 0) {
+        echo json_encode(["success" => false, "message" => "Ya tenés una cita en ese mismo horario."]);
+        exit;
+      }
+
+      // Insertar
+      $datos = [
+        "fecha"      => $fecha,
+        "hora"       => $hora,
+        "estado"     => "PENDIENTE",
+        "mascota_id" => $mascota_id,
+        "cliente_id" => $cliente_id,
+        "sitter_id"  => $sitter_id
+      ];
 
       $resultado = $modelo->insertar($datos);
       echo json_encode([
@@ -73,7 +149,7 @@ try {
 
       $datos = [];
       if (isset($_POST['fecha'])) $datos["fecha"] = $_POST['fecha'];
-      if (isset($_POST['hora'])) $datos["hora"] = $_POST['hora'];
+      if (isset($_POST['hora']))  $datos["hora"]  = (strlen($_POST['hora']) === 5) ? ($_POST['hora'] . ":00") : $_POST['hora'];
       if (isset($_POST['estado'])) $datos["estado"] = $_POST['estado'];
 
       $resultado = $modelo->actualizar($datos, $id);
@@ -100,7 +176,6 @@ try {
       exit;
     }
 
-    // Acción desconocida
     echo json_encode(["success" => false, "message" => "Acción POST no reconocida."]);
     exit;
   }
