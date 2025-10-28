@@ -1,0 +1,417 @@
+/* =========================================
+   🌗 TEMAS (Manual: Light / Dark)
+========================================= */
+:root {
+  --bg: #f5f8f9;
+  --bg-card: rgba(6, 7, 7, 0.13);
+  --text: #1c1f21;
+  --text-muted: #555;
+  --accent: #008b57;
+  --accent2: #078e71;
+  --error: #c62828;
+  --shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  --shadow-inset: inset -1px -2px 46px 13px rgba(0, 0, 0, 0.75);
+}
+
+body.dark-mode {
+  --bg: #0f1e18;
+  --bg-card: rgba(255, 255, 255, 0.06);
+  --text: #e8e8e8;
+  --text-muted: #a5a5a5;
+  --accent: #00ffa7;
+  --accent2: #137360;
+  --error: #ff4f5e;
+  --shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  --shadow-inset: inset -1px -2px 46px 13px rgba(0, 0, 0, 0.75);
+}
+
+/* =========================================
+   🧱 BASE GLOBAL
+========================================= */
+body {
+  background: var(--bg);
+  font-family: "Segoe UI", sans-serif;
+  margin: 0;
+  color: var(--text);
+}
+
+.hidden {
+  display: none !important;
+}
+
+section {
+  margin: 2rem auto;
+  width: 90%;
+}
+
+/* =========================================
+   🔝 BARRA SUPERIOR
+========================================= */
+.topbar {
+  background: linear-gradient(130deg, var(--accent) 0%, var(--accent2) 80%);
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #fff;
+}
+
+.admin-actions {
+  display: flex;
+  gap: 0.6rem;
+}
+
+.btn-logout,
+.btn-edit {
+  background: transparent;
+  border: 2px solid var(--bg);
+  padding: 0.5rem 1rem;
+  color: var(--bg);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.25s;
+  font-weight: bold;
+}
+
+.btn-logout:hover,
+.btn-edit:hover {
+  background: var(--bg);
+  color: var(--accent2);
+  border: 2px solid var(--accent2);
+}
+
+/* 🌞🌙 Switch visual con íconos */
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+.theme-toggle input {
+  display: none;
+}
+
+.theme-toggle .toggle-label {
+  position: relative;
+  width: 50px;
+  height: 26px;
+  background: var(--accent2);
+  border-radius: 50px;
+  transition: background 0.3s;
+}
+
+.theme-toggle .toggle-label::before {
+  content: "🌞";
+  position: absolute;
+  left: 4px;
+  top: 2px;
+  font-size: 18px;
+  transition: transform 0.3s;
+}
+
+.theme-toggle input:checked + .toggle-label {
+  background: var(--accent);
+}
+
+.theme-toggle input:checked + .toggle-label::before {
+  content: "🌙";
+  transform: translateX(24px);
+}
+
+/* =========================================
+   📊 KPI CARDS
+========================================= */
+.kpi-container {
+  width: 90%;
+  margin: 1.5rem auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.kpi-card {
+  background: var(--bg-card);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  padding: 1rem;
+  width: 180px;
+  text-align: center;
+  transition: 0.25s;
+  box-shadow: var(--shadow);
+}
+
+.kpi-card:hover {
+  transform: translateY(-6px);
+}
+
+.kpi-card p {
+  font-size: 2rem;
+  font-weight: bold;
+  color: var(--accent2);
+}
+/* =========================================
+   📋 TABLAS Y CONTENEDORES
+========================================= */
+.section-card {
+  width: 90%;
+  margin: 2rem auto;
+  padding: 1rem;
+  background: var(--bg-card);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+}
+
+.table-container {
+  width: 100%;
+  overflow-x: auto;
+  margin-bottom: 2rem;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--bg-card);
+  box-shadow: var(--shadow);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+th,
+td {
+  text-align: left;
+  vertical-align: middle;
+  white-space: nowrap;
+  padding: 0.7rem;
+}
+
+th {
+  background: var(--accent2);
+  color: #fff;
+  cursor: pointer;
+  user-select: none;
+}
+
+th.sortable:hover {
+  background: var(--accent);
+}
+
+td {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+tr:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+/* =========================================
+   🎛️ FILTROS
+========================================= */
+.filters {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+/* =========================================
+   🖱️ BOTONES EN TABLA
+========================================= */
+table button,
+#usersTable td button {
+  padding: 0.4rem 0.8rem;
+  border: none;
+  border-radius: 6px;
+  background: var(--accent2);
+  color: #fff;
+  cursor: pointer;
+  transition: 0.25s;
+}
+
+table button:hover,
+#usersTable td button:hover {
+  background: var(--accent);
+}
+/* =========================================
+   🖼️ AVATAR DE USUARIO
+========================================= */
+.avatar-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  min-height: 48px; /* Asegura altura mínima para centrar */
+}
+
+.avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--accent2);
+  display: block;
+  margin: auto;
+}
+.avatar.circle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--accent2);
+  color: #fff;
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.avatar-preview-container {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.avatar-preview {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--accent2);
+}
+
+/* =========================================
+   🔄 PAGINACIÓN
+========================================= */
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 1rem;
+}
+
+.pagination button {
+  padding: 0.4rem 0.8rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  background: var(--accent);
+  color: #fff;
+  transition: 0.25s;
+}
+
+.pagination button.active,
+.pagination button:hover {
+  background: var(--accent2);
+}
+
+/* =========================================
+   💬 MODALES
+========================================= */
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal.hidden {
+  display: none !important;
+}
+
+.modal-content {
+  width: 40%;
+  max-height: 90vh;
+  overflow-y: auto;
+  background: linear-gradient(
+    180deg,
+    rgba(25, 92, 69, 0.227) 0%,
+    rgba(87, 199, 134, 0.243) 50%,
+    rgba(83, 134, 237, 0.227) 100%
+  );
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(12px);
+  padding: 1.5rem;
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+  color: rgb(178, 188, 184);
+  box-shadow: var(--shadow);
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* =========================================
+   🧑‍💻 FORMULARIO DE PERFIL
+========================================= */
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.8rem;
+  margin-top: 1rem;
+}
+
+.form-grid label {
+  font-weight: bold;
+  color: #d8d8d8;
+  font-size: 0.95rem;
+}
+
+.form-grid input[type="text"],
+.form-grid input[type="email"],
+.form-grid input[type="password"],
+.form-grid input[type="file"] {
+  padding: 0.5rem;
+  border-radius: 6px;
+  border: 1px solid var(--accent2);
+  background: var(--bg);
+  color: var(--text);
+  font-size: 0.95rem;
+  font-weight: bold;
+}
+
+/* =========================================
+   🔘 ACCIONES DEL MODAL
+========================================= */
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.modal-actions button {
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  background: var(--accent2);
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  transition: 0.25s;
+}
+
+.modal-actions button:hover {
+  background: var(--accent);
+}
+
+/* =========================================
+   🔍 INPUTS Y FILTROS EXTERNOS
+========================================= */
+input[type="text"],
+select {
+  padding: 0.5rem;
+  border-radius: 6px;
+  border: 1px solid var(--accent2);
+  background: var(--bg-card);
+  color: var(--text);
+  margin-right: 0.5rem;
+}

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Panel del Administrador</title>
+    <link rel="stylesheet" href="./css/admin.css" />
+  </head>
+
+  <body>
+    <!-- ✅ TOPBAR -->
+    <header class="topbar">
+      <h1>🐾 Panel del Administrador</h1>
+      <!-- 🌙/☀️ Theme Switch -->
+      <label class="theme-toggle">
+        <input type="checkbox" id="themeToggle" />
+        <span class="toggle-label"></span>
+      </label>
+
+      <div class="admin-info">
+        <span>Bienvenido </span><br />
+        <span id="adminName">Cargando...</span>
+      </div>
+
+      <!-- 👤 User Actions -->
+      <div class="admin-actions">
+        <button id="btnMyProfile" class="btn-edit">👤 Mi Perfil</button>
+        <button id="btnLogout" class="btn-logout">⏻ Cerrar sesión</button>
+      </div>
+    </header>
+
+    <!-- ✅ INDICADOR GLOBAL DE CARGA -->
+    <div id="globalLoader" class="loader hidden"></div>
+
+    <!-- ✅ KPI CARDS -->
+    <section class="kpi-container">
+      <div class="kpi-card">
+        <h3>Total Usuarios</h3>
+        <p id="kpiTotal">0</p>
+      </div>
+      <div class="kpi-card">
+        <h3>Activos</h3>
+        <p id="kpiActivos">0</p>
+      </div>
+      <div class="kpi-card">
+        <h3>Inactivos</h3>
+        <p id="kpiInactivos">0</p>
+      </div>
+      <div class="kpi-card">
+        <h3>Sitters sin verificar</h3>
+        <p id="kpiPendientes">0</p>
+      </div>
+    </section>
+
+    <!-- ✅ GESTIÓN DE USUARIOS -->
+    <section class="section-card">
+      <h2>Gestión de Usuarios</h2>
+
+      <div class="filters">
+        <input id="searchUser" placeholder="🔍 Buscar por correo..." />
+        <select id="filterRole">
+          <option value="">Todos</option>
+          <option value="OWNER">Dueños</option>
+          <option value="SITTER">Cuidadores</option>
+          <option value="ADMIN">Administradores</option>
+        </select>
+      </div>
+
+      <div class="table-container">
+        <table id="usersTable">
+          <thead>
+            <tr>
+              <th style="width: 60px">📸</th>
+              <th style="width: 30%">Correo</th>
+              <th style="width: 20%">Rol</th>
+              <th style="width: 20%">Estado</th>
+              <th style="width: 20%">Acciones</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+
+        <!-- ✅ PAGINACIÓN -->
+        <div id="paginationUsers" class="pagination"></div>
+      </div>
+    </section>
+
+    <!-- ✅ LISTADO DE CITAS -->
+    <section class="section-card">
+      <h2>Listado de Citas</h2>
+
+      <table id="appointmentsTable">
+        <thead>
+          <tr>
+            <th>Mascota</th>
+            <th>Dueño</th>
+            <th>Cuidador</th>
+            <th class="sortable" data-sort="fecha">Fecha</th>
+            <th class="sortable" data-sort="estado">Estado</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+
+      <div id="paginationCitas" class="pagination"></div>
+    </section>
+
+    <!-- ✅ MODAL PERFIL USUARIO -->
+    <div id="userProfileModal" class="modal hidden">
+      <div class="modal-content">
+        <h3>Perfil de Usuario</h3>
+        <div id="userProfileDetails"></div>
+
+        <div class="modal-actions">
+          <button id="btnVerify" class="hidden">✅ Verificar</button>
+          <button id="btnToggleStatus" class="hidden">🔄 Cambiar Estado</button>
+          <button type="button" onclick="closeProfileModal()">Cerrar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ✅ MODAL EDITAR PERFIL ADMIN -->
+    <div id="editMyProfileModal" class="modal hidden">
+      <div class="modal-content">
+        <h2>🧑‍💻 Mi Perfil</h2>
+
+        <!-- Vista previa de imagen -->
+        <div class="avatar-preview-container">
+          <img
+            id="editMyAvatarPreview"
+            class="avatar-preview"
+            src=""
+            alt="Avatar"
+          />
+        </div>
+
+        <form
+          id="editProfileForm"
+          class="form-grid"
+          enctype="multipart/form-data"
+        >
+          <label for="editMyFoto">📸 Foto de perfil:</label>
+          <input type="file" id="editMyFoto" accept="image/*" />
+
+          <label for="editMyNombre">👤 Nombre completo:</label>
+          <input type="text" id="editMyNombre" required />
+
+          <label for="editMyEmail">📧 Email:</label>
+          <input type="email" id="editMyEmail" required />
+
+          <label for="editMyPassword">🔒 Nueva Contraseña (opcional):</label>
+          <input type="password" id="editMyPassword" />
+
+          <label for="editMyDireccion">📍 Dirección:</label>
+          <input type="text" id="editMyDireccion" />
+
+          <div class="modal-actions">
+            <button type="submit">💾 Guardar</button>
+            <button type="button" onclick="closeEditMyProfile()">
+              Cancelar
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <script type="module" src="./controladores/dashboard-admin.js"></script>
+  </body>
+</html>

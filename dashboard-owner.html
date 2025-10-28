@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>🐶 Panel del Dueño</title>
+    <link rel="stylesheet" href="./css/owner.css" />
+  </head>
+
+  <body>
+    <!-- ✅ TOP BAR -->
+    <header class="topbar">
+      <div class="title-group">
+        <h1>🐶 Panel del Dueño</h1>
+        <p class="welcome">Hola, <span id="ownerName">Usuario</span> 👋</p>
+      </div>
+
+      <div class="right-side">
+        <label class="theme-toggle">
+          <input type="checkbox" id="themeToggle" />
+          <span class="toggle-label"></span>
+        </label>
+        <button onclick="logout()" class="btn-logout">⏻</button>
+      </div>
+    </header>
+
+    <main>
+      <!-- ✅ BLOQUE PERFIL -->
+      <section class="section-card">
+        <h2>⚙️ Mi Perfil</h2>
+        <button id="btnEditProfile" class="btn-primary">Editar Perfil</button>
+      </section>
+
+      <!-- ✅ BLOQUE MASCOTAS -->
+      <section class="section-card">
+        <h2>🐾 Mis Mascotas</h2>
+        <button id="btnAddPet" class="btn-add">➕ Nueva Mascota</button>
+        <div id="petsContainer" class="cards-container"></div>
+      </section>
+
+      <!-- ✅ BLOQUE CITAS -->
+      <section class="section-card">
+        <h2>📅 Mis Citas</h2>
+        <div id="appointmentsContainer" class="cards-container"></div>
+      </section>
+
+      <!-- ✅ BLOQUE RESERVAR -->
+      <section class="section-card">
+        <h2>📌 Reservar Servicio</h2>
+
+        <form id="appointmentForm" class="form-grid">
+          <label>Mascota:</label>
+          <select id="selectPet" required></select>
+
+          <label>Profesional:</label>
+          <select id="selectSitter" required></select>
+
+          <label>Fecha:</label>
+          <input type="date" id="appointmentDate" required />
+
+          <label>Hora disponible:</label>
+          <select id="appointmentTime" required></select>
+
+          <button type="submit" class="btn-primary">📅 Reservar</button>
+        </form>
+      </section>
+    </main>
+
+    <!-- ✅ MODAL MASCOTA -->
+    <div id="petModal" class="modal hidden">
+      <div class="modal-content">
+        <h3>Registrar / Editar Mascota</h3>
+
+        <form id="petForm" class="form-grid" enctype="multipart/form-data">
+          <label>📸 Foto:</label>
+          <input type="file" id="petFoto" name="foto" accept="image/*" />
+
+          <div class="avatar-preview-container">
+            <img
+              id="petFotoPreview"
+              class="avatar-preview hidden"
+              src=""
+              alt="Preview"
+            />
+          </div>
+
+          <label>Nombre:</label>
+          <input id="petNombre" required />
+
+          <label>Especie:</label>
+          <input id="petEspecie" required />
+
+          <label>Raza:</label>
+          <input id="petRaza" />
+
+          <label>Edad:</label>
+          <input id="petEdad" type="number" min="0" />
+
+          <label>Problemas de Salud:</label>
+          <textarea id="petProblemas"></textarea>
+
+          <div class="modal-actions">
+            <button type="submit" class="btn-primary">Guardar ✅</button>
+            <button
+              type="button"
+              onclick="closePetModal()"
+              class="btn-secondary"
+            >
+              Cancelar
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- ✅ MODAL PERFIL -->
+    <!-- ✅ MODAL PERFIL -->
+    <div id="modalProfile" class="modal hidden">
+      <div class="modal-content">
+        <h3>Editar Perfil</h3>
+
+        <form
+          id="editOwnerForm"
+          class="form-grid"
+          enctype="multipart/form-data"
+        >
+          <label>📸 Foto de perfil:</label>
+          <input type="file" id="editOwnerFoto" name="foto" accept="image/*" />
+
+          <div class="avatar-preview-container">
+            <img
+              id="editOwnerAvatarPreview"
+              class="avatar-preview hidden"
+              src=""
+              alt="Preview"
+            />
+          </div>
+
+          <label>Nombre completo:</label>
+          <input id="editOwnerNombre" required />
+
+          <label>📧 Email:</label>
+          <input type="email" id="editOwnerEmail" required />
+
+          <label>📍 Dirección:</label>
+          <input id="editOwnerDireccion" />
+
+          <label>Descripción:</label>
+          <textarea id="editOwnerDescripcion"></textarea>
+
+          <label>Contraseña (opcional):</label>
+          <input
+            type="password"
+            id="editOwnerPassword"
+            placeholder="••••••••"
+          />
+
+          <div class="modal-actions">
+            <button type="submit" class="btn-primary">Guardar ✅</button>
+            <button
+              type="button"
+              onclick="closeProfileModal()"
+              class="btn-secondary"
+            >
+              Cancelar
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <script type="module" src="./controladores/dashboard-owner.js"></script>
+  </body>
+</html>

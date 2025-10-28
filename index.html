@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PetCare - Cuidado de Mascotas</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <nav class="navbar">
+      <a href="index.html" class="nav-logo">🐾 PetCare</a>
+      <ul class="nav-links">
+        <li>
+          <a href="#" class="btn-nav" onclick="openModal('modal-login')"
+            >Iniciar Sesión</a
+          >
+        </li>
+        <li>
+          <a href="#" class="btn-nav" onclick="openModal('modal-register')"
+            >Regístrate</a
+          >
+        </li>
+      </ul>
+    </nav>
+
+    <header class="index-header">
+      <div class="index-header-content">
+        <h1>
+          Cuidado de Mascotas
+          <span class="index-slogan">Paseo seguro, cariño puro</span>
+        </h1>
+        <p class="index-description">
+          Conéctate con cuidadores verificados en tu zona. Rastreo GPS,
+          actualizaciones instantáneas y tranquilidad en cada paseo, visita y
+          estancia.
+        </p>
+        <a href="#" class="index-btn" onclick="openModal('modal-login')"
+          >Empieza Hoy</a
+        >
+      </div>
+    </header>
+       <!-- 🔹 Modal Registro -->
+    <div id="modal-register" class="index-modal hidden">
+      <div class="index-modal-content">
+        <span class="index-close-modal" onclick="closeModal('modal-register')">&times;</span>
+        <h2>Registro</h2>
+        <form id="form-register">
+          <input id="reg-username" type="email" placeholder="Correo" required />
+          <input id="reg-password" type="password" placeholder="Contraseña" required />
+          <input id="reg-password-confirm" type="password" placeholder="Repetir contraseña" required />
+
+                   <div class="index-role-selection">
+            <p>Selecciona tu rol:</p>
+            <div class="index-role-cards">
+              <label class="index-role-card">
+                <input type="radio" name="role" value="OWNER" required />
+                <div class="index-card-content">
+                  <span class="index-role-icon"
+                    ><img src="./img/dueno.png" alt="icono dueño"
+                  /></span>
+                  <span class="role-title">Dueño</span>
+                </div>
+              </label>
+
+              <label class="index-role-card">
+                <input type="radio" name="role" value="SITTER" required />
+                <div class="index-card-content">
+                  <span class="index-role-icon"
+                    ><img
+                      src="./img/veterinario.png"
+                      alt="icono profesional"
+                  /></span>
+                  <span class="index-role-title">Cuidador</span>
+                </div>
+              </label>
+            </div>
+          </div>
+          <button type="submit" class="index-btn">Registrarse</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- 🔹 Modal Login -->
+    <div id="modal-login" class="index-modal hidden">
+      <div class="index-modal-content">
+        <span class="index-close-modal" onclick="closeModal('modal-login')">&times;</span>
+        <h2>Iniciar Sesión</h2>
+        <form id="form-login">
+          <input id="email" type="email" placeholder="Correo" required />
+          <input id="password" type="password" placeholder="Contraseña" required />
+          <p id="login-error" class="error hidden"></p>
+          <button type="submit" class="index-btn">Ingresar</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Secciones principales -->
+    <section class="index-services">
+      <h2>Servicios Profesionales para Mascotas</h2>
+      <p class="index-section-description">
+        Desde paseos diarios hasta hospedaje nocturno, ofrecemos atención
+        integral adaptada a las necesidades únicas de tu mascota.
+      </p>
+
+      <div class="index-card-grid">
+        <!-- Tarjeta 1 -->
+        <div class="index-card popular">
+          <div class="index-card-icon">📍</div>
+          <h3>Paseo de Perros</h3>
+          <p class="index-price">Desde $25 · 30-60 min</p>
+          <p class="index-card-description">
+            Servicio profesional de paseo con rastreo GPS en tiempo real y fotos
+            actualizadas
+          </p>
+          <ul>
+            <li>✔ Rastreo GPS</li>
+            <li>✔ Fotos en tiempo real</li>
+            <li>✔ Horarios flexibles</li>
+            <li>✔ Reporte del clima</li>
+          </ul>
+        </div>
+
+        <!-- Tarjeta 2 -->
+        <div class="index-card">
+          <div class="index-card-icon">❤️</div>
+          <h3>Cuidado en Casa</h3>
+          <p class="index-price">Desde $50 · Día completo</p>
+          <p class="index-card-description">
+            Cuidado amoroso en tu hogar cuando no estás, incluye alimentación y
+            juegos
+          </p>
+          <ul>
+            <li>✔ Visitas a domicilio</li>
+            <li>✔ Alimentación y medicinas</li>
+            <li>✔ Sesiones de juego</li>
+            <li>✔ Seguridad en casa</li>
+          </ul>
+        </div>
+
+        <!-- Tarjeta 3 -->
+        <div class="index-card">
+          <div class="index-card-icon">🛡️</div>
+          <h3>Hospedaje de Mascotas</h3>
+          <p class="index-price">Desde $75 · Por noche</p>
+          <p class="index-card-description">
+            Cuidado nocturno en hogares verificados con atención 24/7 y
+            actualizaciones
+          </p>
+          <ul>
+            <li>✔ Ambiente hogareño</li>
+            <li>✔ Cuidado 24/7</li>
+            <li>✔ Reportes diarios</li>
+            <li>✔ Contacto de emergencia</li>
+          </ul>
+        </div>
+
+        <!-- Tarjeta 4 -->
+        <div class="index-card">
+          <div class="index-card-icon">⚠️</div>
+          <h3>Atención de Emergencia</h3>
+          <p class="index-price">Desde $40 · Según necesidad</p>
+          <p class="index-card-description">
+            Cuidado de último minuto para situaciones inesperadas con respuesta
+            inmediata
+          </p>
+          <ul>
+            <li>✔ Reserva el mismo día</li>
+            <li>✔ Protocolo de emergencia</li>
+            <li>✔ Coordinación con veterinario</li>
+            <li>✔ Soporte 24/7</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+    <section class="index-how-it-works">
+      <div class="container">
+        <h2>¿Cómo funciona PetCare?</h2>
+        <p class="section-description">
+          Comenzar es muy fácil. Sigue estos pasos para conectar con el cuidador
+          ideal para tu mascota.
+        </p>
+
+        <div class="index-steps-grid">
+          <div class="step">
+            <div class="index-step-icon">👥</div>
+            <h3>Crea tu Perfil</h3>
+            <p>
+              Cuéntanos sobre las necesidades, preferencias y horarios de tu
+              mascota
+            </p>
+          </div>
+          <div class="step">
+            <div class="index-step-icon">🌍</div>
+            <h3>Busca Cuidadores</h3>
+            <p>
+              Mira perfiles, calificaciones y disponibilidad de cuidadores
+              verificados cerca de ti
+            </p>
+          </div>
+          <div class="step">
+            <div class="index-step-icon">📅</div>
+            <h3>Reserva y Conecta</h3>
+            <p>
+              Agenda servicios, chatea con tu cuidador y deja instrucciones
+              especiales
+            </p>
+          </div>
+          <div class="step">
+            <div class="index-step-icon">📱</div>
+            <h3>Sigue y Disfruta</h3>
+            <p>
+              Recibe actualizaciones, fotos y rastreo GPS en tiempo real durante
+              el servicio
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="index-popular-sitters">
+      <div class="container">
+        <h2>Conoce a nuestros cuidadores mejor valorados</h2>
+        <p class="section-description">
+          Nuestra comunidad de cuidadores verificados son profesionales
+          apasionados que tratan a tus mascotas como familia.
+        </p>
+
+        <div class="index-sitters-grid">
+          <div class="index-sitter-card">
+            <img
+              src=" https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=150&h=150&fit=crop&crop=face"
+              alt="Ernesto Tapia"
+              class="index-avatar"
+            />
+            <h3>Sabrina Tapia</h3>
+            <p class="index-location">📍 Centro</p>
+            <p class="index-rating">⭐ 4.9 (127)</p>
+            <p class="index-price">$30/veterinaria</p>
+            <p class="index-specialties">
+              Perros grandes · Mascotas mayores · Medicación
+            </p>
+            <p class="index-meta">
+              Respuesta: &lt; 1 hora · 850 trabajos completados
+            </p>
+            <a
+              href="#"
+              class="index-btn-sitters"
+              onclick="openModal('modal-login')"
+              >Ver perfil</a
+            >
+          </div>
+          <div class="index-sitter-card">
+            <img
+              src="https://images.unsplash.com/photo-1527980965255-d3b416303d12?w=150&h=150&fit=crop&crop=face"
+              alt="Marcos López"
+              class="index-avatar"
+            />
+            <h3>Marcos López</h3>
+            <p class="index-location">📍 Norte</p>
+            <p class="index-rating">⭐ 4.8 (98)</p>
+            <p class="index-price">$25/paseo</p>
+            <p class="index-specialties">
+              Paseos largos · Entrenamiento básico
+            </p>
+            <p class="index-meta">
+              Respuesta: &lt; 30 min · 540 trabajos completados
+            </p>
+            <a
+              href="#"
+              class="index-btn-sitters"
+              onclick="openModal('modal-login')"
+              >Ver perfil</a
+            >
+          </div>
+
+          <div class="index-sitter-card">
+            <img
+              src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&h=150&fit=crop&crop=face"
+              alt="Sara Gómez"
+              class="index-avatar"
+            />
+            <h3>Sara Gómez</h3>
+            <p class="index-location">📍 Sur</p>
+            <p class="index-rating">⭐ 5.0 (200)</p>
+            <p class="index-price">$35/cuidadora</p>
+            <p class="index-specialties">
+              Cuidado en casa · Hospedaje · Emergencias
+            </p>
+            <p class="index-meta">
+              Respuesta: &lt; 1 hora · 1,200 trabajos completados
+            </p>
+            <a
+              href="#"
+              class="index-btn-sitters"
+              onclick="openModal('modal-login')"
+              >Ver perfil</a
+            >
+          </div>
+        </div>
+        <div class="index-text-center">
+          <a
+            href="#"
+            class="index-btn-outline"
+            onclick="openModal('modal-login')"
+            >Ver todos los cuidadores</a
+          >
+        </div>
+      </div>
+    </section>
+    <section class="index-dashboard-preview">
+      <div class="container">
+        <h2>Un panel poderoso para ti</h2>
+        <p>
+          Administra todo desde un solo lugar. Seas dueño o cuidador, nuestros
+          paneles intuitivos hacen el cuidado de mascotas simple y transparente.
+        </p>
+
+        <div class="index-dashboard-grid">
+          <div class="index-dashboard-card">
+            <h3>Panel de Dueño</h3>
+            <p>
+              Administra tus mascotas, reserva servicios y sigue sus actividades
+            </p>
+            <ul>
+              <li>✔ Perfiles de mascotas</li>
+              <li>✔ Calendario de reservas</li>
+              <li>✔ Seguimiento en vivo</li>
+              <li>✔ Historial de pagos</li>
+            </ul>
+          </div>
+          <div class="index-dashboard-card">
+            <h3>Panel de Cuidador</h3>
+            <p>Acepta reservas, comunícate con clientes y gestiona tu agenda</p>
+            <ul>
+              <li>✔ Solicitudes de trabajo</li>
+              <li>✔ Mensajería con clientes</li>
+              <li>✔ Seguimiento de ganancias</li>
+              <li>✔ Planificador de agenda</li>
+            </ul>
+          </div>
+          <div class="index-dashboard-card">
+            <h3>Seguimiento en Vivo</h3>
+            <p>
+              Rastreo GPS en tiempo real con fotos y actualizaciones durante los
+              paseos
+            </p>
+            <ul>
+              <li>✔ Mapa de ruta GPS</li>
+              <li>✔ Fotos con hora</li>
+              <li>✔ Resumen de actividad</li>
+              <li>✔ Reportes de incidentes</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="index-trust-safety">
+      <div class="container">
+        <h2>La seguridad de tu mascota es nuestra prioridad</h2>
+        <div class="index-trust-grid">
+          <div class="index-trust-card">
+            <h3>🛡️ Verificación de antecedentes</h3>
+            <p>
+              Todos los cuidadores pasan por una verificación exhaustiva de
+              antecedentes y referencias.
+            </p>
+          </div>
+          <div class="index-trust-card">
+            <h3>🏅 Asegurados y certificados</h3>
+            <p>
+              Cada reserva está cubierta por seguro y protección certificada.
+            </p>
+          </div>
+          <div class="index-trust-card">
+            <h3>📸 Actualizaciones en tiempo real</h3>
+            <p>
+              Rastreo GPS, fotos y mensajería instantánea para mantenerte
+              siempre conectado.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="index-cta">
+      <div class="container">
+        <h2>¿Estás lista para brindarle a tu mascota el mejor cuidado?</h2>
+        <p style="margin: 1rem auto 3rem">
+          Únete a nuestra comunidad hoy y experimenta el cuidado de mascotas sin
+          preocupaciones.
+        </p>
+        <a
+          href="#"
+          class="index-btn-outline"
+          onclick="openModal('modal-register')"
+          >Comienza tu viaje</a
+        >
+      </div>
+    </section>
+    <footer class="index-footer">
+      <div class="container">
+        <div class="index-footer-grid">
+          <div>
+            <h3>🐾 PetWay</h3>
+            <p>Paseo seguro, cariño puro</p>
+            <p>
+              Servicios profesionales de cuidado de mascotas en los que puedes
+              confiar.
+            </p>
+          </div>
+
+          <div>
+            <h4>🛠️ Servicios</h4>
+            <ul>
+              <li>🐕 Paseo de Perros</li>
+              <li>🏠 Cuidado en Casa</li>
+              <li>🐾 Aseo</li>
+              <li>🚨 Emergencias</li>
+            </ul>
+          </div>
+
+          <div>
+            <h4>👩‍⚕️ Para Cuidadores</h4>
+            <ul>
+              <li>🧑‍🌾 Conviértete en Cuidador</li>
+              <li>📚 Recursos</li>
+              <li>🎓 Certificación</li>
+              <li>🛡️ Guías de Seguridad</li>
+            </ul>
+          </div>
+
+          <div>
+            <h4>📞 Soporte</h4>
+            <ul>
+              <li>❓ Centro de Ayuda</li>
+              <li>✉️ Contáctanos</li>
+              <li>🔐 Seguridad</li>
+              <li>📄 Términos</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="index-footer-bottom">
+          <p>&copy; 2025 PetCare Platform. Todos los derechos reservados.</p>
+        </div>
+      </div>
+    </footer>
+    <script type="module" src="./controladores/main-index.js"></script>
+  </body>
+</html>
