@@ -26,7 +26,7 @@ const sitterName = document.getElementById("sitterName");
 const verifyStatus = document.getElementById("verifyStatus");
 const openProfileModalBtn = document.getElementById("openProfileModal");
 const profileModal = document.getElementById("profileModal");
-const reseñasList = document.getElementById("reseñasList");
+const reseniasList = document.getElementById("reseniasList");
 
 // =============================
 // ✅ UTIL AVATAR
@@ -74,7 +74,9 @@ async function loadProfile() {
 // =============================
 // ✅ Actualizar Perfil
 // =============================
-document.getElementById("editProfileForm").addEventListener("submit", async (e) => {
+document
+  .getElementById("editProfileForm")
+  .addEventListener("submit", async (e) => {
     e.preventDefault();
 
     const datos = new FormData();
@@ -88,7 +90,7 @@ document.getElementById("editProfileForm").addEventListener("submit", async (e) 
     datos.append("descripcion", editMyDescripcion.value.trim());
 
     if (editMyPassword.value.trim()) {
-        datos.append("password", editMyPassword.value.trim());
+      datos.append("password", editMyPassword.value.trim());
     }
 
     const file = editMyFoto.files[0];
@@ -99,8 +101,7 @@ document.getElementById("editProfileForm").addEventListener("submit", async (e) 
 
     closeProfileModal();
     await loadProfile();
-});
-
+  });
 
 // =============================
 // ✅ RESERVAS
@@ -280,19 +281,26 @@ async function deleteHorario(id) {
 // ✅ RESEÑAS
 // =============================
 async function loadResenias() {
+  console.log("Sitter ID:", sitterId);
+
   const resenias = await seleccionarResenias({ sitter_id: sitterId });
 
-  reseñasList.innerHTML = resenias.length
+  console.log("📌 Reseñas recibidas:", resenias);
+
+  reseniasList.innerHTML = resenias.length
     ? resenias
         .map(
-          (r) =>
-            `<li>⭐ ${r.puntuacion} — ${r.cliente || "Cliente"}<br>${
-              r.comentario || ""
-            }</li>`
+          (r) => `
+        <li class="review-item">
+          ⭐ ${r.estrellas}/5 — <strong>${r.cliente}</strong>
+          <p>${r.comentario}</p>
+          <small>${r.fecha.split(" ")[0]}</small>
+        </li>`
         )
         .join("")
-    : "<p>No hay reseñas aún</p>";
+    : `<p class="no-reviews">❌ Aún no hay reseñas</p>`;
 }
+
 
 // =============================
 // ✅ TABS
@@ -311,29 +319,25 @@ document.querySelectorAll(".tab-btn").forEach((btn) => {
   });
 });
 
-// =============================
-// ✅ Dark / Light Mode
-// =============================
+// ===================== MODO OSCURO =====================
 themeToggle.addEventListener("change", () => {
-  document.body.classList.toggle("light-mode");
-  localStorage.setItem(
-    "theme",
-    document.body.classList.contains("light-mode") ? "light" : "dark"
-  );
+  document.body.classList.toggle("dark-mode", themeToggle.checked);
+  localStorage.setItem("modoOscuro", themeToggle.checked ? "1" : "0");
 });
 
-(function initTheme() {
-  const saved = localStorage.getItem("theme");
-  if (saved === "light") {
-    document.body.classList.add("light-mode");
-    themeToggle.checked = true;
-  }
-})();
+if (localStorage.getItem("modoOscuro") === "1") {
+  document.body.classList.add("dark-mode");
+  themeToggle.checked = true;
+}
 
-// =============================
-// ✅ Logout
-// =============================
-window.logout = function () {
+// ===================== LOGOUT =====================
+document.getElementById("btnLogout").addEventListener("click", () => {
+  if (confirm("¿Seguro que querés cerrar sesión?")) {
+    logout();
+  }
+});
+
+window.logout = () => {
   localStorage.clear();
   window.location.href = "index.html";
 };

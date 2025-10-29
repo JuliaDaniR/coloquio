@@ -3,28 +3,37 @@
   <head>
     <meta charset="UTF-8" />
     <title>Panel del Administrador</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Monoton&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Rubik+Doodle+Shadow&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="./css/admin.css" />
   </head>
 
   <body>
     <!-- ✅ TOPBAR -->
     <header class="topbar">
-      <h1>🐾 Panel del Administrador</h1>
-      <!-- 🌙/☀️ Theme Switch -->
-      <label class="theme-toggle">
-        <input type="checkbox" id="themeToggle" />
-        <span class="toggle-label"></span>
-      </label>
-
       <div class="admin-info">
+        <h1>🐾 Panel del Administrador</h1>
         <span>Bienvenido </span><br />
         <span id="adminName">Cargando...</span>
       </div>
 
       <!-- 👤 User Actions -->
       <div class="admin-actions">
-        <button id="btnMyProfile" class="btn-edit">👤 Mi Perfil</button>
-        <button id="btnLogout" class="btn-logout">⏻ Cerrar sesión</button>
+        <div>
+          <!-- 🌙/☀️ Theme Switch -->
+          <label class="theme-toggle">
+            <input type="checkbox" id="themeToggle" />
+            <span class="toggle-label"></span>
+          </label>
+        </div>
+        <div>
+          <button id="btnMyProfile" class="btn-edit">👤 Mi Perfil</button>
+          <button id="btnLogout" class="btn-logout">⏻ Cerrar sesión</button>
+        </div>
       </div>
     </header>
 

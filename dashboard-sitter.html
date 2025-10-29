@@ -3,32 +3,34 @@
   <head>
     <meta charset="UTF-8" />
     <title>Panel del Profesional</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Monoton&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Rubik+Doodle+Shadow&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="./css/sitter.css" />
   </head>
 
   <body>
     <header class="topbar">
-      <div class="title-group">
+      <div class="contain-titulo">
         <h1>🐾 Panel del Profesional</h1>
-
-        <p class="welcome-text">
-          <span id="sitterAvatar" class="avatar circle">?</span>
-          Hola, <span id="sitterName">Usuario</span> 👋
-          <span id="verifyStatus" class="badge">...</span>
-        </p>
+        <span>Bienvenido </span><br />
+        <span id="sitterName">Usuario</span>
+        <span id="verifyStatus" class="badge">...</span>
       </div>
 
-      <div class="right-side">
+      <!-- 👤 User Actions -->
+      <div class="owner-actions">
         <!-- 🌙/☀️ Theme Switch -->
         <label class="theme-toggle">
           <input type="checkbox" id="themeToggle" />
           <span class="toggle-label"></span>
         </label>
-
-        <button onclick="logout()" class="btn-logout">⏻</button>
+        <button id="btnLogout" class="btn-logout">⏻ Cerrar sesión</button>
       </div>
     </header>
-
     <!-- ✅ Reservas -->
     <section class="section-card">
       <h2>📅 Mis Reservas</h2>
@@ -112,7 +114,7 @@
     <!-- ✅ Reseñas -->
     <section class="section-card">
       <h2>⭐ Mis Reseñas</h2>
-      <ul id="reseñasList" class="review-list"></ul>
+      <ul id="reseniasList" class="review-list"></ul>
     </section>
 
     <!-- ✅ Perfil -->

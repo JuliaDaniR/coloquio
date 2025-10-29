@@ -50,8 +50,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // ===================== INSERTAR =====================
     if ($accion === "insertar") {
         if (empty($email) || empty($password)) {
-            echo json_encode(["success" => false, "message" => "Correo y contraseña son obligatorios."]);
-            ob_end_flush(); exit;
+        echo json_encode(["success" => false, "message" => "Correo y contraseña son obligatorios."]);
+        ob_end_flush(); exit;
         }
 
         // Primer usuario = ADMIN
@@ -71,19 +71,25 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         }
 
         $hash = password_hash($password, PASSWORD_DEFAULT);
+
+        // ✅ Verificación automática según tipo de usuario
+        $rolUpper = strtoupper($rol);
+        $verificado = ($rolUpper === "OWNER" || $rolUpper === "ADMIN") ? 1 : 0;
+
         $datos = [
             "email" => $email,
             "password" => $hash,
-            "rol" => strtoupper($rol),
+            "rol" => $rolUpper,
             "activo" => 1,
-            "verificado" => 0
+            "verificado" => $verificado
         ];
 
         $resultado = $usuario->insertar($datos);
         echo json_encode([
             "success" => $resultado > 0,
             "message" => "Usuario registrado correctamente.",
-            "role" => $rol
+            "role" => $rolUpper,
+            "verificado" => $verificado
         ]);
         ob_end_flush(); exit;
     }
@@ -138,5 +144,4 @@ if ($_SERVER["REQUEST_METHOD"] === "GET") {
     echo json_encode($usuarios);
     ob_end_flush(); exit;
 }
-
 ?>

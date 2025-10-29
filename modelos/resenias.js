@@ -4,14 +4,23 @@ const URL = "/julia-rodriguez/proyecto-coloquio/api/resenias.php?tabla=resenias"
 /**
  * Selecciona las resenias de la base de datos
  */
-export async function seleccionarResenias() {
-  let res = await fetch(`${URL}&accion=seleccionar`);
-  let datos = await res.json();
+export async function seleccionarResenias(filtros = {}) {
+  let url = `${URL}&accion=seleccionar`;
+
+  if (filtros.sitter_id) {
+    url += `&sitter_id=${filtros.sitter_id}`;
+  }
+
+  const res = await fetch(url);
+  const datos = await res.json();
+
   if (res.status !== 200) {
     throw Error("Los datos no se han podido recuperar");
   }
+
   return datos;
 }
+
 
 /**
  * Inserta una resenia de la base de datos

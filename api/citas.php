@@ -8,34 +8,44 @@ try {
   $method = $_SERVER['REQUEST_METHOD'];
   $accion = $_GET['accion'] ?? ($_POST['accion'] ?? '');
 
-  // =======================
-  // 📥 GET: obtener citas
-  // =======================
-  if ($method === 'GET') {
-    // Devolvemos con aliases consistentes con el frontend
-    $sql = "SELECT c.id, c.fecha, c.hora, c.estado,
-              m.nombre AS mascota,
-              u1.nombre_completo AS duenio,
-              u2.nombre_completo AS cuidador
-            FROM citas c
-            JOIN mascotas m ON m.id = c.mascota_id
-            JOIN usuarios u1 ON u1.id = c.cliente_id
-            JOIN usuarios u2 ON u2.id = c.sitter_id";
+// =======================
+// 📥 GET: obtener citas
+// =======================
+if ($method === 'GET') {
 
-    if (isset($_GET['sitter_id'])) {
-      $sitter_id = intval($_GET['sitter_id']);
-      $sql .= " WHERE c.sitter_id = $sitter_id";
-    } elseif (isset($_GET['cliente_id'])) {
-      $cliente_id = intval($_GET['cliente_id']);
-      $sql .= " WHERE c.cliente_id = $cliente_id";
-    }
+$sql = "SELECT 
+          c.id, 
+          c.fecha, 
+          c.hora, 
+          c.estado,
+          c.sitter_id,            -- ✅ necesario para las reseñas
+          c.cliente_id,
+          m.nombre AS mascota,
+          u1.nombre_completo AS duenio,
+          u2.nombre_completo AS cuidador,
+          -- ✅ detectar si ya tiene reseña
+          (SELECT COUNT(*) 
+             FROM resenias r 
+            WHERE r.cita_id = c.id) AS tiene_resenia
+        FROM citas c
+        JOIN mascotas m ON m.id = c.mascota_id
+        JOIN usuarios u1 ON u1.id = c.cliente_id
+        JOIN usuarios u2 ON u2.id = c.sitter_id";
 
-    $sql .= " ORDER BY c.fecha ASC, c.hora ASC";
-
-    $citas = $modelo->ejecutarConsulta($sql);
-    echo json_encode($citas);
-    exit;
+  if (isset($_GET['sitter_id'])) {
+    $sitter_id = intval($_GET['sitter_id']);
+    $sql .= " WHERE c.sitter_id = $sitter_id";
+  } elseif (isset($_GET['cliente_id'])) {
+    $cliente_id = intval($_GET['cliente_id']);
+    $sql .= " WHERE c.cliente_id = $cliente_id";
   }
+
+  $sql .= " ORDER BY c.fecha ASC, c.hora ASC";
+
+  $citas = $modelo->ejecutarConsulta($sql);
+  echo json_encode($citas);
+  exit;
+}
 
   // =======================
   // 🆕 POST: crear/actualizar/eliminar

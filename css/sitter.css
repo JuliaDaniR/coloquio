@@ -33,7 +33,8 @@ body:not(.light-mode) {
 ========================================= */
 body {
   background: var(--bg);
-  font-family: "Segoe UI", sans-serif;
+  font-family: "Playfair Display", serif;
+  font-optical-sizing: auto;
   margin: 0;
   color: var(--text);
 }
@@ -42,16 +43,22 @@ body {
   display: none !important;
 }
 
-section {
-  margin: 2rem auto;
-  width: 90%;
+h1{
+  font-family: "Rubik Doodle Shadow", system-ui;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.contain-titulo span {
+  font-size: 1.5rem;
+  color: white;
 }
 
 /* =========================================
    🔝 TOPBAR
 ========================================= */
 .topbar {
-  background: linear-gradient(130deg, var(--accent) 0%, var(--accent2) 80%);
+  background: linear-gradient(130deg, #1c1f21 0%, var(--accent2) 80%);
   padding: 1rem 2rem;
   display: flex;
   justify-content: space-between;
@@ -59,21 +66,12 @@ section {
   color: #fff;
 }
 
-.title-group {
+.owner-actions {
   display: flex;
-  flex-direction: column;
-}
-
-.topbar h1 {
-  margin: 0;
-  font-size: 1.7rem;
-  font-weight: bold;
-}
-
-.welcome-text {
-  margin: 0.2rem 0 0;
-  font-size: 1.1rem;
-  opacity: 0.9;
+  flex-direction: column-reverse;
+  justify-content: end;
+  align-items: end;
+  gap: 0.6rem;
 }
 
 .right-side {
@@ -112,8 +110,8 @@ section {
 .theme-toggle .toggle-label {
   position: relative;
   width: 50px;
-  height: 26px;
-  background: var(--accent2);
+  height: 36px;
+  background: transparent;
   border-radius: 50px;
   transition: background 0.3s;
 }
@@ -123,12 +121,12 @@ section {
   position: absolute;
   left: 4px;
   top: 2px;
-  font-size: 18px;
+  font-size: 24px;
   transition: transform 0.3s;
 }
 
 .theme-toggle input:checked + .toggle-label {
-  background: var(--accent);
+  background: transparent;
 }
 
 .theme-toggle input:checked + .toggle-label::before {
@@ -377,4 +375,35 @@ input, textarea, select {
     opacity: 0;
     transform: translateY(-20px);
   }
+}
+
+.review-list {
+  list-style: none;
+  padding: 0;
+  gap: 12px;
+  display: flex;
+  flex-direction: column;
+}
+
+.review-item {
+  background: var(--card-bg);
+  border-radius: 8px;
+  padding: 12px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+.review-text {
+  margin: 6px 0;
+  color: var(--muted);
+}
+
+.review-date {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.no-reviews {
+  color: var(--muted);
+  text-align: center;
 }

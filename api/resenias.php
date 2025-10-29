@@ -8,22 +8,27 @@ try {
     $method = $_SERVER['REQUEST_METHOD'];
     $accion = $_GET['accion'] ?? ($_POST['accion'] ?? '');
 
-    // ✅ GET: Listar reseñas de un sitter
-    if ($method === 'GET') {
-        if (isset($_GET['sitter_id'])) {
-            $sitter_id = intval($_GET['sitter_id']);
+   // ✅ GET: Listar reseñas de un sitter (con nombre del dueño)
+if ($method === 'GET') {
+    if (isset($_GET['sitter_id'])) {
+        $sitter_id = intval($_GET['sitter_id']);
 
-            $modelo->setCriterio("sitter_id = $sitter_id");
-            $modelo->setOrden("fecha DESC");
+        $sql = "SELECT 
+                    r.*, 
+                    u.nombre_completo AS cliente
+                FROM resenias r
+                JOIN usuarios u ON u.id = r.cliente_id
+                WHERE r.sitter_id = $sitter_id
+                ORDER BY r.fecha DESC";
 
-            $resenias = $modelo->seleccionar();
-            echo json_encode($resenias);
-            exit;
-        }
-
-        echo json_encode([]);
+        $resenias = $modelo->ejecutarConsulta($sql);
+        echo json_encode($resenias);
         exit;
     }
+
+    echo json_encode([]);
+    exit;
+}
 
     // ✅ POST: Registrar reseña
     if ($method === 'POST') {
@@ -46,6 +51,14 @@ try {
             "comentario" => $comentario,
             "fecha" => date("Y-m-d H:i:s") // ✅ Fecha automática
         ];
+// ✅ Evitar reseñas duplicadas por cita
+$sqlCheck = "SELECT COUNT(*) as cant FROM resenias WHERE cita_id = $cita_id";
+$duplicada = $modelo->ejecutarConsulta($sqlCheck);
+
+if ($duplicada && intval($duplicada[0]['cant']) > 0) {
+    echo json_encode(["success" => false, "message" => "Ya calificaste esta cita ✅"]);
+    exit;
+}
 
         $res = $modelo->insertar($datos);
         echo json_encode([

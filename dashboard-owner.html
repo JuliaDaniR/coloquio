@@ -3,38 +3,48 @@
   <head>
     <meta charset="UTF-8" />
     <title>🐶 Panel del Dueño</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Monoton&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Rubik+Doodle+Shadow&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="./css/owner.css" />
   </head>
 
   <body>
-    <!-- ✅ TOP BAR -->
+    <!-- ✅ TOPBAR -->
     <header class="topbar">
-      <div class="title-group">
-        <h1>🐶 Panel del Dueño</h1>
-        <p class="welcome">Hola, <span id="ownerName">Usuario</span> 👋</p>
+      <div class="contain-titulo">
+        <h1>🐾 Panel del Dueño</h1>
+        <span>Bienvenido </span><br />
+        <span id="ownerName">Usuario</span>
       </div>
 
-      <div class="right-side">
+      <!-- 👤 User Actions -->
+      <div class="owner-actions">
+        <!-- 🌙/☀️ Theme Switch -->
         <label class="theme-toggle">
           <input type="checkbox" id="themeToggle" />
           <span class="toggle-label"></span>
         </label>
-        <button onclick="logout()" class="btn-logout">⏻</button>
+        <button id="btnLogout" class="btn-logout">⏻ Cerrar sesión</button>
       </div>
     </header>
-
     <main>
-      <!-- ✅ BLOQUE PERFIL -->
-      <section class="section-card">
-        <h2>⚙️ Mi Perfil</h2>
-        <button id="btnEditProfile" class="btn-primary">Editar Perfil</button>
-      </section>
-
       <!-- ✅ BLOQUE MASCOTAS -->
       <section class="section-card">
         <h2>🐾 Mis Mascotas</h2>
         <button id="btnAddPet" class="btn-add">➕ Nueva Mascota</button>
         <div id="petsContainer" class="cards-container"></div>
+      </section>
+
+      <!-- ✅ BLOQUE PERFIL -->
+      <section class="section-card">
+        <h2>⚙️ Mi Perfil</h2>
+        <button id="btnEditProfile" class="btn-primary">Editar Perfil</button>
       </section>
 
       <!-- ✅ BLOQUE CITAS -->
@@ -67,12 +77,20 @@
 
     <!-- ✅ MODAL MASCOTA -->
     <div id="petModal" class="modal hidden">
-      <div class="modal-content">
-        <h3>Registrar / Editar Mascota</h3>
+      <div class="modal-content pet-modal">
+        <h3 class="modal-title">🐾 Registrar / Editar Mascota</h3>
 
         <form id="petForm" class="form-grid" enctype="multipart/form-data">
-          <label>📸 Foto:</label>
-          <input type="file" id="petFoto" name="foto" accept="image/*" />
+          <div class="form-row full">
+            <label class="form-label">📸 Foto de la mascota</label>
+            <input
+              type="file"
+              id="petFoto"
+              name="foto"
+              accept="image/*"
+              class="input-file"
+            />
+          </div>
 
           <div class="avatar-preview-container">
             <img
@@ -83,29 +101,41 @@
             />
           </div>
 
-          <label>Nombre:</label>
-          <input id="petNombre" required />
+          <div class="form-row">
+            <label class="form-label">Nombre:</label>
+            <input id="petNombre" class="input" required />
+          </div>
 
-          <label>Especie:</label>
-          <input id="petEspecie" required />
+          <div class="form-row">
+            <label class="form-label">Especie:</label>
+            <input id="petEspecie" class="input" required />
+          </div>
 
-          <label>Raza:</label>
-          <input id="petRaza" />
+          <div class="form-row">
+            <label class="form-label">Raza:</label>
+            <input id="petRaza" class="input" />
+          </div>
 
-          <label>Edad:</label>
-          <input id="petEdad" type="number" min="0" />
+          <div class="form-row">
+            <label class="form-label">Edad:</label>
+            <input
+              id="petEdad"
+              type="number"
+              min="0"
+              class="input"
+              placeholder="Años"
+            />
+          </div>
 
-          <label>Problemas de Salud:</label>
-          <textarea id="petProblemas"></textarea>
+          <div class="form-row full">
+            <label class="form-label">Problemas de Salud:</label>
+            <textarea id="petProblemas" class="input textarea"></textarea>
+          </div>
 
           <div class="modal-actions">
-            <button type="submit" class="btn-primary">Guardar ✅</button>
-            <button
-              type="button"
-              onclick="closePetModal()"
-              class="btn-secondary"
-            >
-              Cancelar
+            <button type="submit" class="btn-save">✅ Guardar</button>
+            <button type="button" onclick="closePetModal()" class="btn-cancel">
+              ❌ Cancelar
             </button>
           </div>
         </form>
@@ -114,16 +144,25 @@
 
     <!-- ✅ MODAL PERFIL -->
     <div id="modalProfile" class="modal hidden">
-      <div class="modal-content">
-        <h3>Editar Perfil</h3>
+      <div class="modal-content profile-modal">
+        <h3 class="modal-title">👤 Editar Perfil</h3>
 
         <form
           id="editOwnerForm"
           class="form-grid"
           enctype="multipart/form-data"
         >
-          <label>📸 Foto de perfil:</label>
-          <input type="file" id="editOwnerFoto" name="foto" accept="image/*" />
+          <!-- ✅ Foto -->
+          <div class="form-row full">
+            <label class="form-label">📸 Foto de perfil:</label>
+            <input
+              type="file"
+              id="editOwnerFoto"
+              name="foto"
+              accept="image/*"
+              class="input-file"
+            />
+          </div>
 
           <div class="avatar-preview-container">
             <img
@@ -134,30 +173,80 @@
             />
           </div>
 
-          <label>Nombre completo:</label>
-          <input id="editOwnerNombre" required />
+          <!-- ✅ Datos básicos -->
+          <div class="form-row">
+            <label class="form-label">Nombre completo:</label>
+            <input id="editOwnerNombre" class="input" required />
+          </div>
 
-          <label>📧 Email:</label>
-          <input type="email" id="editOwnerEmail" required />
+          <div class="form-row">
+            <label class="form-label">📧 Email:</label>
+            <input type="email" id="editOwnerEmail" class="input" required />
+          </div>
 
-          <label>📍 Dirección:</label>
-          <input id="editOwnerDireccion" />
+          <div class="form-row full">
+            <label class="form-label">📍 Dirección:</label>
+            <input id="editOwnerDireccion" class="input" />
+          </div>
 
-          <label>Descripción:</label>
-          <textarea id="editOwnerDescripcion"></textarea>
+          <div class="form-row full">
+            <label class="form-label">🧩 Descripción:</label>
+            <textarea
+              id="editOwnerDescripcion"
+              class="input textarea"
+            ></textarea>
+          </div>
 
-          <label>Contraseña (opcional):</label>
-          <input
-            type="password"
-            id="editOwnerPassword"
-            placeholder="••••••••"
-          />
+          <div class="form-row full">
+            <label class="form-label">🔐 Contraseña (opcional):</label>
+            <input
+              type="password"
+              id="editOwnerPassword"
+              class="input"
+              placeholder="••••••••"
+            />
+          </div>
 
+          <!-- ✅ Acciones -->
           <div class="modal-actions">
-            <button type="submit" class="btn-primary">Guardar ✅</button>
+            <button type="submit" class="btn-save">✅ Guardar</button>
             <button
               type="button"
               onclick="closeProfileModal()"
+              class="btn-cancel"
+            >
+              ❌ Cancelar
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <!-- ✅ MODAL RESEÑA -->
+    <div id="modalReview" class="modal hidden">
+      <div class="modal-content">
+        <h3>Calificar al cuidador ⭐</h3>
+
+        <form id="reviewForm" class="form-grid">
+          <label>Calificación:</label>
+          <select id="reviewStars" required>
+            <option value="5">⭐⭐⭐⭐⭐</option>
+            <option value="4">⭐⭐⭐⭐</option>
+            <option value="3">⭐⭐⭐</option>
+            <option value="2">⭐⭐</option>
+            <option value="1">⭐</option>
+          </select>
+
+          <label>Comentario (opcional):</label>
+          <textarea
+            id="reviewComment"
+            placeholder="¿Cómo fue la experiencia?"
+          ></textarea>
+
+          <div class="modal-actions">
+            <button type="submit" class="btn-primary">Enviar ✅</button>
+            <button
+              type="button"
+              onclick="closeReviewModal()"
               class="btn-secondary"
             >
               Cancelar

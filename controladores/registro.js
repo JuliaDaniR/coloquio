@@ -19,6 +19,7 @@ export async function registerUser(event) {
   }
 
   const formData = new FormData();
+  formData.append("accion", "insertar");
   formData.append("email", email);
   formData.append("rol", rol);
   formData.append("password", password);

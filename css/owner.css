@@ -1,76 +1,95 @@
+/* ============================================================
+   🎨 TEMAS GLOBAL (Light / Dark)
+============================================================ */
 :root {
-  --bg: #0f1115;
-  --panel: #161a22;
-  --panel-2: #1b2030;
-  --muted: #8b95a7;
-  --text: #f2f5f9;
-  --primary: #5bbcff;
-  --accent: #63e6be;
-  --warn: #ffd166;
-  --danger: #ff6b6b;
-  --card: #141925;
-  --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
-  --radius: 16px;
-  --ring: 0 0 0 2px rgba(99, 230, 190, 0.25);
+  --bg: #f5f8f9;
+  --bg-card: rgba(6, 7, 7, 0.13);
+  --text: #1c1f21;
+  --text-muted: #555;
+  --accent: #008b57;
+  --accent2: #078e71;
+  --error: #c62828;
+  --shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  --shadow-inset: inset -1px -2px 46px 13px rgba(0, 0, 0, 0.75);
 }
 
-* {
-  box-sizing: border-box;
+body.dark-mode {
+  --bg: #0f1e18;
+  --bg-card: rgba(255, 255, 255, 0.06);
+  --text: #e8e8e8;
+  --text-muted: #a5a5a5;
+  --accent: #00ffa7;
+  --accent2: #137360;
+  --error: #ff4f5e;
+  --shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  --shadow-inset: inset -1px -2px 46px 13px rgba(0, 0, 0, 0.75);
 }
-html,
+
+
+/* ============================================================
+   🧱 BASE
+============================================================ */
+* { box-sizing: border-box; }
+
 body {
-  margin: 0;
-  padding: 0;
   background: var(--bg);
+  font-family: "Playfair Display", serif;
+  font-optical-sizing: auto;
+  margin: 0;
   color: var(--text);
-  font-family: Inter, system-ui, Segoe UI, Roboto, Arial, sans-serif;
 }
-img {
-  max-width: 100%;
-  display: block;
-}
+
 .hidden {
   display: none !important;
 }
 
+h1{
+  font-family: "Rubik Doodle Shadow", system-ui;
+  font-weight: 400;
+  font-style: normal;
+}
+.contain-titulo span {
+  font-size: 1.5rem;
+  color: white;
+}
+
+/* =========================================
+   🔝 BARRA SUPERIOR
+========================================= */
 .topbar {
-  position: sticky;
-  top: 0;
-  z-index: 10;
+  background: linear-gradient(130deg, #1c1f21 0%, var(--accent2) 80%);
+  padding: 1rem 2rem;
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  padding: 16px 20px;
-  background: linear-gradient(180deg, #12161f, #0f1115);
-  border-bottom: 1px solid #1f2635;
-  box-shadow: var(--shadow);
-}
-.title-group h1 {
-  margin: 0;
-  font-size: 22px;
-}
-.title-group .welcome {
-  margin: 6px 0 0;
-  color: var(--muted);
-  font-size: 14px;
-}
-.right-side {
-  display: flex;
   align-items: center;
-  gap: 12px;
+  color: #fff;
 }
-.btn-logout {
-  border: 0;
-  background: #21283a;
-  color: #e2e8f0;
-  padding: 10px 12px;
-  border-radius: 10px;
+
+.owner-actions {
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: end;
+  align-items: end;
+  gap: 0.6rem;
+}
+
+.btn-logout,
+.btn-edit {
+  background: transparent;
+  border: 2px solid var(--bg);
+  padding: 0.5rem 1rem;
+  color: var(--bg);
+  border-radius: 8px;
   cursor: pointer;
-  transition: transform 0.15s ease, background 0.2s ease;
+  transition: 0.25s;
+  font-weight: bold;
 }
-.btn-logout:hover {
-  transform: translateY(-1px);
-  background: #2b344b;
+
+.btn-logout:hover,
+.btn-edit:hover {
+  background: var(--bg);
+  color: var(--accent2);
+  border: 2px solid var(--accent2);
 }
 
 /* 🌞🌙 Switch visual con íconos */
@@ -89,8 +108,9 @@ img {
 .theme-toggle .toggle-label {
   position: relative;
   width: 50px;
-  height: 26px;
-  background: var(--accent2);
+  height: 36px;
+  padding: 1rem;
+  background: transparent;
   border-radius: 50px;
   transition: background 0.3s;
 }
@@ -100,12 +120,12 @@ img {
   position: absolute;
   left: 4px;
   top: 2px;
-  font-size: 18px;
+  font-size: 24px;
   transition: transform 0.3s;
 }
 
 .theme-toggle input:checked + .toggle-label {
-  background: var(--accent);
+  background: transparent;
 }
 
 .theme-toggle input:checked + .toggle-label::before {
@@ -113,169 +133,98 @@ img {
   transform: translateX(24px);
 }
 
+/* ============================================================
+   📦 SECCIONES
+============================================================ */
 .section-card {
-  margin: 22px auto;
+  width: 90%;
   max-width: 1100px;
+  margin: 22px auto;
   padding: 20px;
   border-radius: var(--radius);
-  background: linear-gradient(180deg, var(--panel), var(--panel-2));
-  border: 1px solid #22293a;
+  background: var(--bg-card);
+  border: 1px solid rgba(255,255,255,0.1);
   box-shadow: var(--shadow);
+  backdrop-filter: blur(10px);
 }
+
 .section-card h2 {
-  margin: 0 0 16px;
+  margin: 0 0 14px;
 }
-.btn-edit,
-.btn-add,
-.btn-primary {
-  border: 0;
+
+.btn-review {
+  width: 100%;
+  background: linear-gradient(180deg, #e9b800, #c79800);
+  border: 1px solid #cfa300;
+  color: #fff;
+  font-weight: bold;
+  padding: 8px 14px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.btn-review:hover {
+  background: linear-gradient(180deg, #ffdd55, #d9ad00);
+  transform: translateY(-2px);
+}
+
+/* ============================================================
+   🖱️ BOTONES
+============================================================ */
+.btn-primary,
+.btn-add {
+  border: none;
   padding: 10px 14px;
   border-radius: 12px;
   cursor: pointer;
-  background: linear-gradient(180deg, #2a6dfb, #2b59d1);
+  transition: .25s ease;
   color: white;
+  font-weight: bold;
   box-shadow: var(--ring);
+}
+.btn-primary {
+  background: linear-gradient(180deg, #5bbcff, #2d86d8);
 }
 .btn-add {
   background: linear-gradient(180deg, #23a55a, #1f8d4d);
 }
-.btn-primary {
-  background: linear-gradient(180deg, #5bbcff, #3aa1ee);
-}
 
+/* ============================================================
+   🐾 CARDS GRID
+============================================================ */
 .cards-container {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(260px,1fr));
   gap: 16px;
 }
 
-/* ---- CARD GENERIC ---- */
+/* ========== CARD ========= */
 .card {
-  background: var(--card);
-  border: 1px solid #1e2636;
+  background: var(--bg-card);
   border-radius: 18px;
   overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.08);
   box-shadow: var(--shadow);
-  transition: transform 0.18s ease, box-shadow 0.18s ease, border 0.18s ease;
+  transition: .25s;
 }
 .card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.5);
-  border-color: #2b3550;
-}
-.card-header {
-  position: relative;
-  height: 150px;
-  background: #0e1220;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-}
-.card-header img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-.card-badge {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  padding: 6px 10px;
-  border-radius: 999px;
-  background: rgba(0, 0, 0, 0.4);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  backdrop-filter: blur(6px);
-  font-size: 12px;
-}
-.card-content {
-  padding: 14px;
-}
-.card-title {
-  margin: 0 0 6px;
-  font-weight: 600;
-}
-.card-subtitle {
-  margin: 0;
-  color: var(--muted);
-  font-size: 13px;
-}
-.card-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: 12px;
-  font-size: 13px;
-  color: var(--muted);
-}
-.card-actions {
-  display: flex;
-  gap: 8px;
-  margin-top: 12px;
-}
-.btn-light {
-  border: 1px solid #2a334a;
-  background: #1b2236;
-  color: #e6edf7;
-  padding: 8px 10px;
-  border-radius: 10px;
-  cursor: pointer;
-}
-.btn-danger {
-  background: #3b1f28;
-  border: 1px solid #693343;
-  color: #ffc9c9;
+  transform: translateY(-4px);
 }
 
-/* ---- PET PLACEHOLDERS por especie ---- */
-.pet-placeholder {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 62px;
-  opacity: 0.85;
-}
-.pet-dog {
-  background: linear-gradient(160deg, #2a364f, #1c2435);
-}
-.pet-cat {
-  background: linear-gradient(160deg, #2f2a4f, #201c35);
-}
-.pet-other {
-  background: linear-gradient(160deg, #2a4f45, #1c352f);
-}
-
-/* ---- APPOINTMENT TAGS ---- */
+/* TAGs Estado */
 .tag {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
   padding: 4px 8px;
   border-radius: 999px;
   font-size: 12px;
-  border: 1px solid #2b3550;
-  color: #b8c4e0;
-  background: #141b2b;
 }
-.tag.warn {
-  border-color: #695a2b;
-  color: #ffe8a3;
-  background: #2a2414;
-}
-.tag.ok {
-  border-color: #2c5b48;
-  color: #b7fbe5;
-  background: #14221d;
-}
-.tag.pending {
-  border-color: #324769;
-  color: #b9d6ff;
-  background: #131b2a;
-}
+.tag.ok { background: #123a2b; color: #b7fbe5; }
+.tag.warn { background: #3a3912; color: #ffe7a0; }
+.tag.pending { background:#1b253b; color: #c8d9ff; }
 
-/* ---- FORMS ---- */
+/* ============================================================
+   ✍️ FORMULARIOS
+============================================================ */
 .form-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -283,57 +232,544 @@ img {
 }
 .form-grid label {
   font-size: 13px;
-  color: #aab4c8;
+  color: var(--text-muted);
 }
 .form-grid input,
 .form-grid select,
 .form-grid textarea {
+  width: 100%;
+  padding: 10px;
+  border-radius: 10px;
+  background: #121726;
+  border: 1px solid #27304a;
+  color: white;
+}
+.form-grid textarea {
+  grid-column: span 2;
+  min-height: 90px;
+}
+
+/* =========================================
+   💬 MODALES
+========================================= */
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal.hidden {
+  display: none !important;
+}
+
+.modal-content {
+  width: 40%;
+  max-height: 90vh;
+  overflow-y: auto;
+  background: linear-gradient(
+    180deg,
+    rgba(25, 92, 69, 0.227) 0%,
+    rgba(87, 199, 134, 0.243) 50%,
+    rgba(83, 134, 237, 0.227) 100%
+  );
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(12px);
+  padding: 1.5rem;
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+  color: rgb(178, 188, 184);
+  box-shadow: var(--shadow);
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* ============================
+   🎨 PET FORM MODAL
+============================ */
+.pet-modal {
+  max-width: 550px;
+}
+
+.modal-title {
+  margin-bottom: 15px;
+  color: #e9eef8;
+  font-weight: 600;
+  text-align: center;
+  font-size: 20px;
+}
+
+/* Filas del formulario */
+.form-row {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-row.full {
+  grid-column: 1 / -1;
+}
+
+/* Inputs */
+.input,
+.input-file,
+.textarea {
   width: 100%;
   padding: 10px 12px;
   border-radius: 10px;
   background: #121726;
   border: 1px solid #27304a;
   color: #e9eef8;
-}
-.form-grid textarea {
-  min-height: 90px;
-  grid-column: 1 / -1;
-}
-.modal-actions {
-  grid-column: 1 / -1;
-  display: flex;
-  gap: 10px;
-  justify-content: flex-end;
-  margin-top: 6px;
+  margin-top: 5px;
 }
 
-/* ---- MODAL ---- */
-.modal {
-  position: fixed;
-  inset: 0;
-  background: rgba(4, 6, 10, 0.6);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 50;
+.textarea {
+  resize: none;
+  min-height: 80px;
 }
-.modal .modal-content {
-  width: min(680px, 92vw);
-  background: linear-gradient(180deg, #151a27, #101521);
-  border: 1px solid #26304a;
-  border-radius: 18px;
-  box-shadow: var(--shadow);
-  padding: 18px;
+
+/* Label */
+.form-label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #aab4c8;
 }
+
+/* Avatar preview */
 .avatar-preview-container {
+  grid-column: 1 / -1;
   display: flex;
   justify-content: center;
-  margin: 8px 0;
+  margin: 8px 0 14px;
 }
+
 .avatar-preview {
   width: 110px;
   height: 110px;
   border-radius: 50%;
   object-fit: cover;
-  border: 2px solid #2b3550;
+  border: 3px solid #26304a;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+}
+
+/* Buttons */
+.modal-actions {
+  grid-column: 1 / -1;
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.btn-save {
+  background: #1f8d4d;
+  border: 1px solid #26a85b;
+  color: #fff;
+  padding: 10px 16px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.25s ease;
+}
+.btn-save:hover {
+  background: #23a55a;
+}
+
+.btn-cancel {
+  background: #3a1b24;
+  border: 1px solid #783743;
+  color: #ffd6db;
+  padding: 10px 16px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.25s;
+}
+.btn-cancel:hover {
+  background: #562330;
+}
+
+/* ===================================================
+   🎨 PROFILE FORM MODAL
+=================================================== */
+.profile-modal {
+  max-width: 550px;
+}
+
+.modal-title {
+  margin-bottom: 15px;
+  color: #e9eef8;
+  font-weight: 600;
+  text-align: center;
+  font-size: 20px;
+}
+
+/* Input y textarea mismo estilo del modal de Mascota */
+.input,
+.input-file,
+.textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: #121726;
+  border: 1px solid #27304a;
+  color: #e9eef8;
+  margin-top: 5px;
+}
+
+.textarea {
+  min-height: 90px;
+  resize: none;
+}
+
+.form-label {
+  font-size: 14px;
+  color: #aab4c8;
+}
+
+.form-row.full {
+  grid-column: 1 / -1;
+}
+
+/* ✅ Buttons */
+.btn-save {
+  background: #1f8d4d;
+  border: 1px solid #26a85b;
+  color: #fff;
+  padding: 10px 16px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.25s;
+}
+
+.btn-save:hover {
+  background: #23a55a;
+}
+
+.btn-cancel {
+  background: #3a1b24;
+  border: 1px solid #783743;
+  color: #ffd6db;
+  padding: 10px 16px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.25s;
+}
+
+.btn-cancel:hover {
+  background: #562330;
+}
+
+/* =========================================
+   🖼️ AVATAR DE USUARIO
+========================================= */
+.avatar-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  min-height: 48px; /* Asegura altura mínima para centrar */
+}
+
+.avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--accent2);
+  display: block;
+  margin: auto;
+}
+.avatar.circle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--accent2);
+  color: #fff;
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.avatar-preview-container {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.avatar-preview {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--accent2);
+}
+
+/* =========================================
+   🧑‍💻 FORMULARIO DE PERFIL
+========================================= */
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.8rem;
+  margin-top: 1rem;
+}
+
+.form-grid label {
+  font-weight: bold;
+  color: #d8d8d8;
+  font-size: 0.95rem;
+}
+
+.form-grid input[type="text"],
+.form-grid input[type="email"],
+.form-grid input[type="password"],
+.form-grid input[type="file"] {
+  padding: 0.5rem;
+  border-radius: 6px;
+  border: 1px solid var(--accent2);
+  background: var(--bg);
+  color: var(--text);
+  font-size: 0.95rem;
+  font-weight: bold;
+}
+
+/* =========================================
+   🔘 ACCIONES DEL MODAL
+========================================= */
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.modal-actions button {
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  background: var(--accent2);
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  transition: 0.25s;
+}
+
+.modal-actions button:hover {
+  background: var(--accent);
+}
+
+/* =========================================
+   🔍 INPUTS Y FILTROS EXTERNOS
+========================================= */
+input[type="text"],
+select {
+  padding: 0.5rem;
+  border-radius: 6px;
+  border: 1px solid var(--accent2);
+  background: var(--bg-card);
+  color: var(--text);
+  margin-right: 0.5rem;
+}
+
+/* ================================
+   🐾 PET CARDS
+================================ */
+.pet-card {
+  background: linear-gradient(180deg, #151a27, #101521);
+  border: 1px solid #232b3e;
+  border-radius: 18px;
+  overflow: hidden;
+  margin-top: 2rem;
+  box-shadow: 0 4px 22px rgba(0,0,0,0.35);
+  transition: all 0.25s ease-in-out;
+}
+
+.pet-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 10px 32px rgba(0,0,0,0.55);
+  border-color: #2b3550;
+}
+
+.pet-card-header {
+  position: relative;
+  height: 190px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #0e1220;
+  overflow: hidden;
+}
+
+.pet-card-header img {
+  width: 100%;
+  height: auto;
+  max-height: 190px;
+  object-fit: contain;
+}
+
+.pet-card-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  padding: 6px 12px;
+  font-size: 11px;
+  font-weight: 600;
+  background: rgba(0,0,0,0.55);
+  border: 1px solid rgba(255,255,255,0.15);
+  backdrop-filter: blur(6px);
+  border-radius: 999px;
+  color: #eaf6ff;
+}
+
+.pet-card-content {
+  padding: 16px;
+}
+
+.pet-card-title {
+  font-size: 17px;
+  margin: 0 0 6px;
+  font-weight: 600;
+  color: #e9eef8;
+}
+
+.pet-card-subtitle {
+  font-size: 13px;
+  margin: 0 0 12px;
+  color: #9aa7c7;
+}
+
+.pet-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  margin-bottom: 14px;
+}
+
+/* Estado de salud */
+.pet-tag.ok {
+  background: #14221d;
+  border: 1px solid #2c5b48;
+  color: #b7fbe5;
+}
+.pet-tag.warn {
+  background: #332416;
+  border: 1px solid #8b673a;
+  color: #ffe8a3;
+}
+
+/* Acciones */
+.pet-card-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.btn-edit,
+.btn-delete {
+  flex: 1;
+  padding: 8px 10px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 13px;
+  transition: 0.25s ease;
+}
+
+/* Botón Editar */
+.btn-edit {
+  background: #1f2c46;
+  border: 1px solid #44577e;
+  color: #dbe3f4;
+}
+.btn-edit:hover {
+  background: #2c3e61;
+}
+
+/* Botón Eliminar */
+.btn-delete {
+  background: #3a1b24;
+  border: 1px solid #783743;
+  color: #f5c5cc;
+}
+.btn-delete:hover {
+  background: #562330;
+}
+
+/* ================ 📆 APPOINTMENT CARD ================ */
+.appointment-card {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(14px);
+  border: 1px solid #242c3e;
+  border-radius: 16px;
+  padding: 14px 0 12px;
+  transition: 0.25s ease;
+  cursor: default;
+  min-height: 125px;
+}
+
+.appointment-card:hover {
+  transform: translateY(-3px);
+  border-color: #2e3a52;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.4);
+}
+
+.appointment-header {
+  background: linear-gradient(180deg, #0c111b 0%, #0a0d14 100%);
+  padding: 10px 14px;
+  border-bottom: 1px solid #222a39;
+  font-size: 15px;
+  font-weight: 600;
+  color: #cfd7e6;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pet-icon {
+  font-size: 18px;
+}
+
+.separator {
+  opacity: 0.6;
+}
+
+.sitter-name {
+  color: #8eb5ff;
+  font-weight: 500;
+}
+
+/* Contenido inferior */
+.card-content {
+  padding: 12px 14px 6px;
+}
+
+.schedule {
+  font-size: 14px;
+  color: #aab4c8;
+  margin: 0 0 8px;
+}
+
+.status-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Estados */
+.tag.reject {
+  border-color: #702e2e;
+  color: #ffc9c9;
+  background: #2a1414;
 }

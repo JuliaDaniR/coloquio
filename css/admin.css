@@ -30,7 +30,8 @@ body.dark-mode {
 ========================================= */
 body {
   background: var(--bg);
-  font-family: "Segoe UI", sans-serif;
+  font-family: "Playfair Display", serif;
+  font-optical-sizing: auto;
   margin: 0;
   color: var(--text);
 }
@@ -44,11 +45,21 @@ section {
   width: 90%;
 }
 
+h1 {
+  font-family: "Rubik Doodle Shadow", system-ui;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.admin-info span {
+  font-size: 1.5rem;
+  color: white;
+}
 /* =========================================
    🔝 BARRA SUPERIOR
 ========================================= */
 .topbar {
-  background: linear-gradient(130deg, var(--accent) 0%, var(--accent2) 80%);
+  background: linear-gradient(130deg, #1c1f21 0%, var(--accent2) 80%);
   padding: 1rem 2rem;
   display: flex;
   justify-content: space-between;
@@ -58,6 +69,9 @@ section {
 
 .admin-actions {
   display: flex;
+  flex-direction: column-reverse;
+  justify-content: end;
+  align-items: end;
   gap: 0.6rem;
 }
 
@@ -96,8 +110,8 @@ section {
 .theme-toggle .toggle-label {
   position: relative;
   width: 50px;
-  height: 26px;
-  background: var(--accent2);
+  height: 36px;
+  background: transparent;
   border-radius: 50px;
   transition: background 0.3s;
 }
@@ -107,12 +121,12 @@ section {
   position: absolute;
   left: 4px;
   top: 2px;
-  font-size: 18px;
+  font-size: 24px;
   transition: transform 0.3s;
 }
 
 .theme-toggle input:checked + .toggle-label {
-  background: var(--accent);
+  background: transparent;
 }
 
 .theme-toggle input:checked + .toggle-label::before {
@@ -247,8 +261,8 @@ table button:hover,
 }
 
 .avatar {
-  width: 36px;
-  height: 36px;
+  width: 120px;
+  height: 120px;
   border-radius: 50%;
   object-fit: cover;
   border: 2px solid var(--accent2);
